@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\TaskRepositoryInterface;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     private TaskRepositoryInterface $taskRepository;
+
 
     public function __construct(TaskRepositoryInterface $taskRepository)
     {
@@ -16,78 +19,89 @@ class TaskController extends Controller
 
     public function index()
     {
-        $tasks = $this->taskRepository->getAllTasks();
-        return $tasks;
-    }
+        try {
 
-    public function create()
-    {
-        return view('tasks.create');
-    }
-
-    public function edit(Request $request)
-    {
-        $taskId = $request->route('taskId');
-
-        $task = $this->taskRepository->getTaskById($taskId);
-
-        if (empty($task)) {
-            return back();
+            $tasks = $this->taskRepository->getAllTasks();
+            return  response()->json(['message' => 'Sucesso', 'tasks' => $tasks]);
+        } catch (Exception $err) {
+            return response()->json(['error' => $err->getMessage()], 401);
         }
-
-        return view('tasks.edit', ['task' => $task]);
     }
 
     public function store(Request $request)
     {
-        $taskDetails = [
-            'title' => $request->title,
-            'description' => $request->description
-        ];
 
-        $this->taskRepository->createTask($taskDetails);
+        $userId = auth()->id();
 
-        return redirect()->Route('tasks');
+        try {
+            $taskDetails = [
+                'description' => $request->description,
+                'user_id' =>   $userId
+            ];
+
+            $task = $this->taskRepository->createTask($taskDetails);
+
+            return  response()->json(['message' => 'Task criada com sucesso!', 'task' => $task]);
+        } catch (Exception $err) {
+            return response()->json(['error' => $err->getMessage()], 401);
+        }
     }
 
     public function show(Request $request)
     {
-        $taskId = $request->route('taskId');
+        try {
+            $taskId = $request->route('taskId');
+            $task = $this->taskRepository->getTaskById($taskId);
 
-        $task = $this->taskRepository->getTaskById($taskId);
-
-        if (empty($task)) {
-            return back();
+            return  response()->json(['message' => 'Task encontrada!', 'task' => $task]);
+        } catch (Exception $err) {
+            return response()->json(['error' => $err->getMessage()], 401);
         }
-
-        return view('tasks.show', ['task' => $task]);
     }
     public function update(Request $request)
     {
-        $taskId = $request->route('taskId');
 
-        $taskDetails = [
-            'title' => $request->title,
-            'description' => $request->description
-        ];
+        try {
+            $taskId = $request->route('taskId');
 
-         if (isset($request->is_completed)) {
-            $taskDetails['is_completed'] = true;
-        } else {
-            $taskDetails['is_completed'] = false;
+            $taskDetails = [];
+
+            $completeTaskValue = $request->completed;
+            $descriptionTaskValue = $request->description;
+
+            if (isset($completeTaskValue)) {
+                $taskDetails['completed'] = $completeTaskValue;
+            }
+
+            if (isset($descriptionTaskValue)) {
+                $taskDetails['description'] = $descriptionTaskValue;
+            }
+
+            $isTaskUpdate = $this->taskRepository->updateTask($taskId, $taskDetails);
+
+            return  response()->json(['message' => 'Task Atualizada!', 'success' => (bool) $isTaskUpdate]);
+        } catch (Exception $err) {
+            return response()->json(['error' => $err->getMessage()], 401);
         }
-
-        $this->taskRepository->updateTask($taskId, $taskDetails);
-
-        return redirect()->Route('tasks');
     }
 
     public function destroy(Request $request)
     {
-        $taskId = $request->route('taskId');
 
-        $this->taskRepository->deleteTask($taskId);
+        try {
 
-        return back();
+
+            $taskId = $request->route('taskId');
+
+            $isTaskDeleted = $this->taskRepository->deleteTask($taskId);
+
+            if ($isTaskDeleted) {
+                return  response()->json(['message' => 'Task deletada com sucesso!', 'success' => (bool) $isTaskDeleted]);
+            } else {
+                return  response()->json(['message' => 'Task já foi deletada!', 'success' => (bool) $isTaskDeleted]);
+            }
+        } catch (Exception $err) {
+            return response()->json(['error' => $err->getMessage()], 401);
+        }
     }
 }

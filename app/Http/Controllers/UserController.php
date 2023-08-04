@@ -27,7 +27,9 @@ class UserController extends Controller
                 $userDetails = $request->all();
                 $userDetails['password'] = Hash::make($userDetails['password']);
 
-                $this->userRepository->createUser($userDetails);
+                $createdUser = $this->userRepository->createUser($userDetails);
+
+                return response()->json(['message' => 'Usuario criado com sucesso', 'success' => true, 'user' => $createdUser]);
             } else {
                 return '$validated';
             }

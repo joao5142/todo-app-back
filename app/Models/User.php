@@ -23,11 +23,17 @@ class User extends  Authenticatable implements JWTSubject
         'remember_token',
     ];
 
-    public function getJWTIdentifier(){
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
     }
-    public function getJWTCustomClaims(){
-         return [];
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'user_id', 'id');
+    }
 }
