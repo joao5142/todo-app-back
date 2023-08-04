@@ -7,12 +7,14 @@ use App\Models\User;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function getUserById($userId){
+    public function getUserById($userId)
+    {
         return User::findOrFail($userId);
     }
 
-    public function createUser($userDetails){
+    public function createUser($userDetails)
+    {
+
         return  User::create($userDetails);
     }
-
 }

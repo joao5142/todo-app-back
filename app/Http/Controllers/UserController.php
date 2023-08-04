@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Interfaces\UserRepositoryInterface;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -15,11 +18,23 @@ class UserController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $userDetails=$request->all();
+        try {
+            $validated = $request->validated();
 
-        $this->userRepository->createUser($userDetails);
+            if ($validated) {
+                $userDetails = $request->all();
+                $userDetails['password'] = Hash::make($userDetails['password']);
+
+                $this->userRepository->createUser($userDetails);
+            } else {
+                return '$validated';
+            }
+        } catch (Exception $err) {
+
+            return response()->json(['error' => $err->getMessage()], 401);
+        }
     }
 
 
@@ -33,7 +48,6 @@ class UserController extends Controller
             return back();
         }
 
-         return $user;
+        return $user;
     }
-
 }
