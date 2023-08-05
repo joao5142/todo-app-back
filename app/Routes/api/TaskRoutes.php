@@ -9,13 +9,13 @@ class TaskRoutes
 {
     public static function getRoutes()
     {
-
         Route::group(['middleware' => 'auth:api', 'prefix' => 'task'], function () {
             Route::get('/all', [TaskController::class, 'index'])->name('all_tasks');
 
             Route::post('/save', [TaskController::class, 'store'])->name('save_task');
 
             Route::get('/show/{taskId}', [TaskController::class, 'show'])->name('task_show');
+            Route::get('/relatory', [TaskController::class, 'relatory'])->name('task_relatory');
 
             Route::patch('/edit/{taskId}', [TaskController::class, 'update'])->name('update_task');
 

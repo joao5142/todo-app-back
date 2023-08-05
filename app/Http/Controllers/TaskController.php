@@ -17,11 +17,11 @@ class TaskController extends Controller
         $this->taskRepository = $taskRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
 
-            $tasks = $this->taskRepository->getAllTasks();
+            $tasks = $this->taskRepository->getAllTasks($request->query());
             return  response()->json(['message' => 'Sucesso', 'tasks' => $tasks]);
         } catch (Exception $err) {
             return response()->json(['error' => $err->getMessage()], 401);
@@ -87,10 +87,7 @@ class TaskController extends Controller
 
     public function destroy(Request $request)
     {
-
         try {
-
-
             $taskId = $request->route('taskId');
 
             $isTaskDeleted = $this->taskRepository->deleteTask($taskId);
@@ -100,6 +97,16 @@ class TaskController extends Controller
             } else {
                 return  response()->json(['message' => 'Task já foi deletada!', 'success' => (bool) $isTaskDeleted]);
             }
+        } catch (Exception $err) {
+            return response()->json(['error' => $err->getMessage()], 401);
+        }
+    }
+
+    public function relatory(Request $request)
+    {
+        try {
+            $relatory = $this->taskRepository->getTaskRelatory();
+            return  response()->json(['message' => 'Sucesso ao pegar o relatorio das tasks!', 'relatory' => $relatory]);
         } catch (Exception $err) {
             return response()->json(['error' => $err->getMessage()], 401);
         }

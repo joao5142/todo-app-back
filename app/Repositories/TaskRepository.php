@@ -7,10 +7,21 @@ use App\Models\Task;
 
 class TaskRepository implements TaskRepositoryInterface
 {
-    public function getAllTasks()
+    public function getAllTasks($query)
     {
+        $userId = auth()->id();
 
-        $tasks = auth()->user()->tasks;
+        $filter = $query['filter'];
+
+        $tasks = Task::all()->where('user_id', $userId);
+
+
+        if ($filter == 'todo') {
+            $tasks = $tasks->where('completed', false);
+        } else if ($filter == 'completed') {
+            $tasks = $tasks->where('completed', true);
+        }
+
         $result = [];
 
         foreach ($tasks as $task) {
@@ -27,7 +38,7 @@ class TaskRepository implements TaskRepositoryInterface
             $result[$date]['data'][] = [
                 'id' => $task->id,
                 'description' => $task->description,
-                'completed' => $task->completed
+                'completed' => (bool) $task->completed
             ];
         }
         return array_values($result);
@@ -51,5 +62,15 @@ class TaskRepository implements TaskRepositoryInterface
     public function updateTask($taskId, array $newDetails)
     {
         return Task::whereId($taskId)->update($newDetails);
+    }
+
+    public function getTaskRelatory()
+    {
+        $relatory = [];
+
+        $relatory['total'] = auth()->user()->tasks->count();
+        $relatory['completed'] = auth()->user()->tasks->where('completed', 1)->count();
+
+        return $relatory;
     }
 }
