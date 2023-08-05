@@ -28,16 +28,11 @@
 
 </div>
 
-<h2>🖼️ Demonstração da aplicação</h2>
-<img style="max-width:500px;width:500px"  margin-bottom="20px" src="src/assets/images/readme/readme1.png">
-<hr/>
-<img style="max-width:500px;width:500px"   margin-bottom="20px" src="src/assets/images/readme/readme2.png">
-<hr/>
-<img style="max-width:500px;width:500px"  margin-bottom="20px" src="src/assets/images/readme/readme3.png">
-<hr/>
-<img style="max-width:500px;width:500px"  margin-bottom="20px" src="src/assets/images/readme/readme4.png">
-<hr/>
-<img style="max-width:500px;width:500px"  margin-bottom="20px" src="src/assets/images/readme/readme5.png">
+<p>Link da documentação da api</p>
+
+<a href="https://documenter.getpostman.com/view/21329947/2s9XxyRDBd">
+	 https://documenter.getpostman.com/view/21329947/2s9XxyRDBd
+</a>
 
 <h2>🧑🏻‍ Autor</h2>
 <p>Feito por João paulo</p>
