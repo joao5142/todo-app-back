@@ -19,20 +19,19 @@
 	<li>Obs : a senha dos usuários criados pela factory é : password</li>
 </ul>
 
+<p>Link da documentação da api</p>
+
+<a href="https://documenter.getpostman.com/view/21329947/2s9XxyRDBd">
+	https://documenter.getpostman.com/view/21329947/2s9XxyRDBd
+</a>
+
 <h2>🤖 Tecnologias Utilizadas</h2>
 <div style="display: inline_block">
   <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white">
   <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white">
  <img src="https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white">
 
-
 </div>
-
-<p>Link da documentação da api</p>
-
-<a href="https://documenter.getpostman.com/view/21329947/2s9XxyRDBd">
-	 https://documenter.getpostman.com/view/21329947/2s9XxyRDBd
-</a>
 
 <h2>🧑🏻‍ Autor</h2>
 <p>Feito por João paulo</p>
