@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Task;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class TasksTableSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     public function run()
     {
-        Task::factory()->count(8)->create();
+        User::factory()->count(3)->create();
     }
 }
